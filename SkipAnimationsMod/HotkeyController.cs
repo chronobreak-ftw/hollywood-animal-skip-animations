@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BepInEx.Configuration;
+using Enums;
 using GUISystemModule;
 using UI.Views;
 using UnityEngine;
 #if DEBUG
-using BepInEx.Configuration;
 using Data.GameObject;
-using Enums;
 using GameEvents;
 using Managers;
 using Model;
