@@ -20,7 +20,6 @@ namespace SkipAnimationsMod.IntegrationTests
                 ("Release-safe debug defaults", HasReleaseSafeDefaults),
                 ("ProjectContext/DI container available", HasProjectContextContainer),
                 ("GUISystem discovered", CanFindGuiSystem),
-                // All game managers live in scene containers, not ProjectContext — verify via patch capture + reflection.
                 ("Core managers captured via patch/reflection", HaveAllRuntimeManagers),
             };
 
@@ -83,8 +82,6 @@ namespace SkipAnimationsMod.IntegrationTests
             return Resources.FindObjectsOfTypeAll<GUISystem>().FirstOrDefault() != null;
         }
 
-        // All game managers live in scene containers, not ProjectContext.
-        // The mod captures them via Harmony Initialize patches; this verifies those captures fired.
         private static bool HaveAllRuntimeManagers()
         {
             HotkeyController.EnsureRuntimeManagersForTest();

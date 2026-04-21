@@ -19,7 +19,6 @@ namespace SkipAnimationsMod
 {
     internal static class HotkeyController
     {
-        // After 3 seconds at 60 fps the update loop is confirmed active.
         private const int UpdateLoopConfirmTicks = 180;
 
         private static int _updateTicks;
@@ -28,10 +27,6 @@ namespace SkipAnimationsMod
 
         public static void Tick()
         {
-            // Both Plugin.Update and GuiSystemHotkeyPumpPatch call Tick each frame as a belt-and-
-            // suspenders measure (GUISystem.Update is the primary path on some Unity versions where
-            // MonoBehaviour.Update can lag behind input polling). Guard against double-firing within
-            // the same frame.
             int frame = Time.frameCount;
             if (frame == _lastTickFrame)
             {
@@ -194,10 +189,6 @@ namespace SkipAnimationsMod
                 else
                 {
                     CancelRaidAnimationDisposables(activeRaidAnimation);
-                    // "<PlayEnd>g__OnFinished|41_2" is the IL name of the local function
-                    // OnFinished inside PoliceRaidAnimation.PlayEnd (compiler-generated closure).
-                    // If the game recompiles this may change; ReflectionHelper logs a warning
-                    // on miss so the failure will be visible in the log.
                     ReflectionHelper.InvokeHidden(
                         activeRaidAnimation,
                         "<PlayEnd>g__OnFinished|41_2"
@@ -304,7 +295,6 @@ namespace SkipAnimationsMod
         }
 
 #if DEBUG
-        // Exposed for integration tests only.
         internal static void EnsureRuntimeManagersForTest() => EnsureRuntimeManagers();
 
         private static void TryTriggerPoliceRaid()
@@ -533,7 +523,6 @@ namespace SkipAnimationsMod
                 return true;
             }
 
-            // First try the game's own nomination generation flow.
             ReflectionHelper.InvokeHidden(
                 RuntimeState.AssociationManager,
                 "OnPolluxNominationDay",
